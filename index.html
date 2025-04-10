@@ -29,7 +29,6 @@
         body { font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; margin: 0; padding: 30px 15px; padding-bottom: 100px; color: var(--color-text-primary); background-color: var(--color-bg); line-height: 1.7; font-size: 16px; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; transition: background-color var(--transition-speed) var(--transition-func), color var(--transition-speed) var(--transition-func); display: flex; flex-direction: column; min-height: 100vh; }
         .main-container, #savedEntriesContainer { max-width: 850px; margin-left: auto; margin-right: auto; padding: 0 10px; width: 100%; }
         #savedEntriesContainer { flex-grow: 1; }
-        /* --- Title & Animation --- */
         @keyframes gradientText { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
         h1 { font-size: 2.8rem; font-weight: 700; color: transparent; text-align: center; margin-bottom: 1.5em; letter-spacing: -0.5px; background: linear-gradient(90deg, var(--color-accent), var(--color-secondary-accent), var(--color-text-secondary), var(--color-accent)); background-size: 300% 100%; -webkit-background-clip: text; background-clip: text; animation: gradientText 10s ease infinite; }
         h2 { font-size: 1.8rem; font-weight: 600; color: var(--color-text-secondary); text-align: center; margin-top: 3em; margin-bottom: 1.5em; border-bottom: 1px solid var(--color-border); padding-bottom: 0.6em; transition: color var(--transition-speed) var(--transition-func), border-color var(--transition-speed) var(--transition-func); }
@@ -59,29 +58,30 @@
         .toggle-text-button { display: block; width: fit-content; background: none; border: 1px solid var(--color-border); color: var(--color-text-secondary); padding: 3px 8px; font-size: 1rem; line-height: 1; border-radius: var(--border-radius-sm); cursor: pointer; margin-top: 8px; transition: background-color var(--transition-speed) var(--transition-func), color var(--transition-speed) var(--transition-func), border-color var(--transition-speed) var(--transition-func); } .toggle-text-button:hover { background-color: var(--color-input-bg); color: var(--color-text-primary); border-color: var(--color-border-hover);}
         .entry-image-container { width: 100%; height: 200px; background-color: var(--color-input-bg); border-radius: var(--border-radius-md); margin-top: 20px; margin-bottom: 20px; overflow: hidden; position: relative; border: 1px solid var(--color-border); transition: background-color var(--transition-speed) var(--transition-func), border-color var(--transition-speed) var(--transition-func); } .entry img.entry-image { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center; border-radius: 0; border: none; margin: 0; }
         .entry .metadata { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 15px; margin-top: 20px; padding-top: 15px; border-top: 1px solid var(--color-border); transition: border-color var(--transition-speed) var(--transition-func); } .entry .metadata .button-group { display: flex; flex-wrap: wrap; gap: 8px; flex-grow: 1; } .entry .metadata span.entry-timestamp { display: block; font-size: 0.85rem; color: var(--color-text-secondary); margin: 0; margin-left: auto; white-space: nowrap; text-align: right; transition: color var(--transition-speed) var(--transition-func); } .entry .img-error-text { font-style: italic; color: var(--color-text-secondary); font-size: 0.9rem; position: absolute; top: 10px; left: 10px; background: rgba(255,255,255,0.8); color: #333; padding: 2px 5px; border-radius: 3px; }
-        /* --- Modal Styles --- */
-        .modal-overlay { background-color: var(--color-modal-overlay); backdrop-filter: blur(5px); position: fixed; top: 0; left: 0; width: 100%; height: 100%; display: none; align-items: center; justify-content: center; z-index: 1000; opacity: 0; transition: opacity 0.3s ease; } .modal-overlay.modal-visible { display: flex; opacity: 1; } .modal-content { padding: 35px; border-radius: var(--border-radius-lg); box-shadow: 0 8px 30px var(--color-shadow-medium); width: 90%; max-width: 550px; position: relative; border: 1px solid var(--color-border); transform: scale(0.95) translateY(-10px); transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), background-color var(--transition-speed) var(--transition-func), border-color var(--transition-speed) var(--transition-func); background-color: var(--color-surface); } .modal-overlay.modal-visible .modal-content { transform: scale(1) translateY(0); } .modal-close { position: absolute; top: 15px; right: 15px; font-size: 2rem; font-weight: lighter; color: var(--color-text-secondary); cursor: pointer; border: none; background: none; line-height: 1; padding: 0; transition: color 0.2s ease, transform 0.2s ease; } .modal-close:hover { color: var(--color-text-primary); transform: rotate(90deg); } .modal-content h3 { color: var(--color-text-primary); margin-top: 0; margin-bottom: 25px; text-align: center; font-weight: 600; font-size: 1.5rem; transition: color var(--transition-speed) var(--transition-func); } .modal-content label { display: block; margin-bottom: 8px; font-weight: 500; color: var(--color-text-secondary); font-size: 0.9rem; transition: color var(--transition-speed) var(--transition-func); } .modal-content textarea, .modal-content input[type="password"], .modal-content input[type="text"] { width: 100%; padding: 12px; margin-bottom: 18px; border: 1px solid var(--color-border); border-radius: var(--border-radius-md); font-size: 1rem; color: var(--color-text-primary); box-sizing: border-box; background-color: var(--color-input-bg); transition: border-color var(--transition-speed) var(--transition-func), background-color var(--transition-speed) var(--transition-func), color var(--transition-speed) var(--transition-func); } .modal-content textarea { min-height: 160px; } .modal-content textarea:focus-visible, .modal-content input[type="password"]:focus-visible { border-color: var(--color-accent); box-shadow: 0 0 0 3px var(--color-focus-ring); } .modal-actions { display: flex; justify-content: flex-end; gap: 12px; margin-top: 25px; } .modal-button { padding: 10px 20px; font-size: 0.95rem; } #modalSaveButton { background-color: var(--color-accent); color: var(--color-bg); } #modalSaveButton:hover { background-color: var(--color-accent-hover); } #modalCancelButton { background-color: var(--color-cancel-bg); } #modalCancelButton:hover { background-color: var(--color-cancel-hover); } #modalErrorMessage { color: var(--color-error); font-size: 0.9rem; margin-top: 18px; text-align: center; display: none; font-weight: 500; }
+        /* --- Modal Styles (Shared Base) --- */
+        .modal-overlay { background-color: var(--color-modal-overlay); backdrop-filter: blur(5px); position: fixed; top: 0; left: 0; width: 100%; height: 100%; display: none; align-items: center; justify-content: center; z-index: 1000; opacity: 0; transition: opacity 0.3s ease; } .modal-overlay.modal-visible { display: flex; opacity: 1; }
+        .modal-content { padding: 35px; border-radius: var(--border-radius-lg); box-shadow: 0 8px 30px var(--color-shadow-medium); width: 90%; max-width: 550px; position: relative; border: 1px solid var(--color-border); transform: scale(0.95) translateY(-10px); transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), background-color var(--transition-speed) var(--transition-func), border-color var(--transition-speed) var(--transition-func); background-color: var(--color-surface); } .modal-overlay.modal-visible .modal-content { transform: scale(1) translateY(0); }
+        .modal-close { position: absolute; top: 15px; right: 15px; font-size: 2rem; font-weight: lighter; color: var(--color-text-secondary); cursor: pointer; border: none; background: none; line-height: 1; padding: 0; transition: color 0.2s ease, transform 0.2s ease; } .modal-close:hover { color: var(--color-text-primary); transform: rotate(90deg); }
+        .modal-content h3 { color: var(--color-text-primary); margin-top: 0; margin-bottom: 25px; text-align: center; font-weight: 600; font-size: 1.5rem; transition: color var(--transition-speed) var(--transition-func); }
+        .modal-content label { display: block; margin-bottom: 8px; font-weight: 500; color: var(--color-text-secondary); font-size: 0.9rem; transition: color var(--transition-speed) var(--transition-func); }
+        .modal-content textarea, .modal-content input[type="password"], .modal-content input[type="text"] { width: 100%; padding: 12px; margin-bottom: 18px; border: 1px solid var(--color-border); border-radius: var(--border-radius-md); font-size: 1rem; color: var(--color-text-primary); box-sizing: border-box; background-color: var(--color-input-bg); transition: border-color var(--transition-speed) var(--transition-func), background-color var(--transition-speed) var(--transition-func), color var(--transition-speed) var(--transition-func); }
+        .modal-content textarea { min-height: 160px; }
+        .modal-content textarea:focus-visible, .modal-content input[type="password"]:focus-visible { border-color: var(--color-accent); box-shadow: 0 0 0 3px var(--color-focus-ring); }
+        .modal-actions { display: flex; justify-content: flex-end; gap: 12px; margin-top: 25px; }
+        .modal-button { padding: 10px 20px; font-size: 0.95rem; }
+        #modalSaveButton { background-color: var(--color-accent); color: var(--color-bg); } #modalSaveButton:hover { background-color: var(--color-accent-hover); }
+        #modalCancelButton, #passcodeModalCancelButton { background-color: var(--color-cancel-bg); } #modalCancelButton:hover, #passcodeModalCancelButton:hover { background-color: var(--color-cancel-hover); }
+        #modalErrorMessage, #passcodeModalError { color: var(--color-error); font-size: 0.9rem; margin-top: 18px; text-align: center; display: none; font-weight: 500; }
+        /* Specific styles for Passcode Modal */
+        #passcodeModal .modal-content { max-width: 400px; } /* Smaller modal */
+        #passcodeModalConfirmButton { background-color: var(--color-accent); color: var(--color-bg); }
+        #passcodeModalConfirmButton:hover { background-color: var(--color-accent-hover); }
+
         /* --- WhatsApp FAB --- */
-        .whatsapp-fab { position: fixed; bottom: 25px; right: 25px; width: 60px; height: 60px; background-color: var(--color-whatsapp); color: #FFF; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); z-index: 999; transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; text-decoration: none; /* Remove underline */ font-size: 2rem; /* Adjust emoji size */ }
-        .whatsapp-fab:hover { transform: scale(1.1); box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4); }
+        .whatsapp-fab { position: fixed; bottom: 25px; right: 25px; width: 60px; height: 60px; background-color: var(--color-whatsapp); color: #FFF; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); z-index: 999; transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; text-decoration: none; font-size: 2rem; } .whatsapp-fab:hover { transform: scale(1.1); box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4); }
         /* --- Footer --- */
         footer { margin-top: 50px; padding: 25px 15px; text-align: center; border-top: 1px solid var(--color-border); transition: border-color var(--transition-speed) var(--transition-func); }
-        footer a {
-            font-size: 0.85rem; /* Small font */
-            font-weight: 500;
-            color: transparent; /* Hide base color for gradient */
-            text-decoration: none;
-             /* Animated Gray Gradient Text */
-            background: linear-gradient(90deg, var(--color-text-secondary), #BDC3C7, var(--color-text-secondary));
-            background-size: 250% 100%;
-            -webkit-background-clip: text; background-clip: text;
-            animation: gradientText 12s ease infinite; /* Slower animation */
-             transition: opacity var(--transition-speed) var(--transition-func);
-        }
-         footer a:hover {
-            opacity: 0.8; /* Simple hover effect */
-         }
-         footer p { margin: 0; /* Remove default margin from p inside footer if using */ }
+        footer a { font-size: 0.85rem; font-weight: 500; color: transparent; text-decoration: none; background: linear-gradient(90deg, var(--color-text-secondary), #BDC3C7, var(--color-text-secondary)); background-size: 250% 100%; -webkit-background-clip: text; background-clip: text; animation: gradientText 12s ease infinite; transition: opacity var(--transition-speed) var(--transition-func); } footer a:hover { opacity: 0.8; } footer p { margin: 0; }
 
         /* --- Responsiveness --- */
         @media (max-width: 768px) { body { padding: 20px 10px 90px 10px; } h1 { font-size: 2.2rem; } h2 { font-size: 1.5rem; } .input-container, .entry { padding: 20px; } textarea#textInput { min-height: 120px; } .button-base, .file-label { padding: 10px 18px; font-size: 0.95rem; } .copy-button, .edit-button, .pdf-button, .delete-button { padding: 5px 10px; font-size: 0.8rem; } .entry .metadata { flex-direction: column; align-items: flex-start; } .entry .metadata .button-group { width: 100%; justify-content: flex-start; margin-bottom: 10px; } .entry .metadata span.entry-timestamp { margin-left: 0; width: 100%; text-align: left; margin-top: 5px; } .modal-content { padding: 25px; width: 95%; } .modal-content h3 { font-size: 1.3rem; } .modal-actions { justify-content: center; } .whatsapp-fab { width: 50px; height: 50px; bottom: 15px; right: 15px; font-size: 1.6rem; } footer { margin-top: 30px; padding: 20px 10px; font-size: 0.8rem;} }
@@ -94,7 +94,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 </head>
-<body> <div class="main-container">
+<body>
+
+    <div class="main-container">
         <h1>RK NoteBOX</h1>
 
         <div class="input-container">
@@ -134,6 +136,24 @@
         </div>
     </div>
 
+    <div id="passcodeModalOverlay" class="modal-overlay">
+        <div id="passcodeModal" class="modal-content">
+            <button id="passcodeModalCloseButton" class="modal-close">&times;</button>
+            <h3 id="passcodeModalTitle">Enter Passcode</h3>
+             <input type="hidden" id="passcodeModalAction">
+             <input type="hidden" id="passcodeModalData"> <div>
+                <label for="passcodeModalInput">Passcode:</label>
+                <input type="password" id="passcodeModalInput" required>
+            </div>
+            <div id="passcodeModalError">Incorrect Passcode!</div>
+            <div class="modal-actions">
+                <button id="passcodeModalCancelButton" class="modal-button button-base">Cancel</button>
+                <button id="passcodeModalConfirmButton" class="modal-button button-base">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+
     <a href="https://wa.me/94775944554?text=Hi%20Ravindu%20sir%20%F0%9F%91%8B%2C%20I%20need%20help%20with%20the%20Notebox%20website%20%F0%9F%96%A5%EF%B8%8F.%20Please%20assist%20me%20"
        id="whatsappLink" class="whatsapp-fab" target="_blank" title="WhatsApp Support">
         💬 </a>
@@ -162,31 +182,115 @@
 
         // --- Firebase Initialization ---
         let database = null; let entriesRef = null;
-        try { if (!firebaseConfig.apiKey || !firebaseConfig.projectId || !firebaseConfig.databaseURL) { throw new Error("Firebase config incomplete."); } if (typeof window.jspdf === 'undefined') { console.warn("jsPDF library not loaded."); } firebase.initializeApp(firebaseConfig); database = firebase.database(); entriesRef = database.ref('entries'); console.log("Firebase Initialized Successfully."); } catch (error) { /* ... Error Handling ... */ console.error("Firebase Initialization Failed:", error); const statusMsgElem = document.getElementById('statusMessage'); const loadingPlaceholder = document.querySelector('#savedEntriesContainer .no-entries-placeholder'); const errorText = `Error connecting to Database: ${error.message}. Check config & console.`; if(statusMsgElem) { statusMsgElem.textContent = errorText; statusMsgElem.className = 'error visible'; } if(loadingPlaceholder) loadingPlaceholder.textContent = errorText; else if (savedEntriesContainer) { savedEntriesContainer.innerHTML = `<p class="no-entries-placeholder" style="color: var(--color-error);">${errorText}</p>`; } else { alert(errorText); } }
+        try { if (!firebaseConfig.apiKey || !firebaseConfig.projectId || !firebaseConfig.databaseURL) { throw new Error("Firebase config incomplete."); } if (typeof window.jspdf === 'undefined') { console.warn("jsPDF library not loaded."); } firebase.initializeApp(firebaseConfig); database = firebase.database(); entriesRef = database.ref('entries'); console.log("Firebase Initialized Successfully."); } catch (error) { console.error("Firebase Initialization Failed:", error); const statusMsgElem = document.getElementById('statusMessage'); const loadingPlaceholder = document.querySelector('#savedEntriesContainer .no-entries-placeholder'); const errorText = `Error connecting to Database: ${error.message}. Check config & console.`; if(statusMsgElem) { statusMsgElem.textContent = errorText; statusMsgElem.className = 'error visible'; } if(loadingPlaceholder) loadingPlaceholder.textContent = errorText; else if (savedEntriesContainer) { savedEntriesContainer.innerHTML = `<p class="no-entries-placeholder" style="color: var(--color-error);">${errorText}</p>`; } else { alert(errorText); } }
 
         // --- DOM Elements ---
-        const textInput = document.getElementById('textInput'); const imageInput = document.getElementById('imageInput'); const imagePreview = document.getElementById('imagePreview'); const saveButton = document.getElementById('saveButton'); const statusMessage = document.getElementById('statusMessage'); const savedEntriesContainer = document.getElementById('savedEntriesContainer'); const modalOverlay = document.getElementById('modalOverlay'); const modalCloseButton = document.getElementById('modalCloseButton'); const modalSaveButton = document.getElementById('modalSaveButton'); const modalCancelButton = document.getElementById('modalCancelButton'); const modalEntryIdInput = document.getElementById('modalEntryId'); const modalEditTextarea = document.getElementById('modalEditTextarea'); const modalPasscodeInput = document.getElementById('modalPasscode'); const modalErrorMessage = document.getElementById('modalErrorMessage');
-        // Theme button reference removed
+        const textInput = document.getElementById('textInput'); const imageInput = document.getElementById('imageInput'); const imagePreview = document.getElementById('imagePreview'); const saveButton = document.getElementById('saveButton'); const statusMessage = document.getElementById('statusMessage'); const savedEntriesContainer = document.getElementById('savedEntriesContainer');
+        // Edit Modal
+        const modalOverlay = document.getElementById('modalOverlay'); const modalCloseButton = document.getElementById('modalCloseButton'); const modalSaveButton = document.getElementById('modalSaveButton'); const modalCancelButton = document.getElementById('modalCancelButton'); const modalEntryIdInput = document.getElementById('modalEntryId'); const modalEditTextarea = document.getElementById('modalEditTextarea'); const modalPasscodeInput = document.getElementById('modalPasscode'); const modalErrorMessage = document.getElementById('modalErrorMessage');
+        // Passcode Modal
+        const passcodeModalOverlay = document.getElementById('passcodeModalOverlay');
+        const passcodeModalTitle = document.getElementById('passcodeModalTitle');
+        const passcodeModalInput = document.getElementById('passcodeModalInput');
+        const passcodeModalError = document.getElementById('passcodeModalError');
+        const passcodeModalConfirmButton = document.getElementById('passcodeModalConfirmButton');
+        const passcodeModalCancelButton = document.getElementById('passcodeModalCancelButton');
+        const passcodeModalCloseButton = document.getElementById('passcodeModalCloseButton');
+        const passcodeModalActionInput = document.getElementById('passcodeModalAction');
+        const passcodeModalDataInput = document.getElementById('passcodeModalData'); // To store entryId or save data temporarily
+
         const bodyElement = document.body;
 
-        // --- Theme Functions Removed ---
+        // --- Global state for passcode modal ---
+        let currentActionData = null; // Store data needed after passcode confirmation
 
-        // --- Other Functions ---
+        // --- Functions ---
         let statusTimeout = null; function showStatus(message, type = 'info', clearAfterMs = 3500) { if (!statusMessage) return; clearTimeout(statusTimeout); statusMessage.textContent = message; statusMessage.className = `${type} visible`; console.log(`Status (${type}): ${message}`); if (clearAfterMs !== null) { statusTimeout = setTimeout(() => { statusMessage.classList.remove('visible'); }, clearAfterMs); } }
         function clearInputs() { if (textInput) textInput.value = ''; if (imageInput) imageInput.value = null; if (imagePreview) { imagePreview.style.display = 'none'; imagePreview.src = '#'; } }
-        async function uploadImageToImgBB(file) { /* ... */ if (!imgbbApiKey || imgbbApiKey.length < 30) { showStatus('ImgBB API Key is missing or invalid.', 'error', 5000); return null;} const formData = new FormData(); formData.append('key', imgbbApiKey); formData.append('image', file); showStatus('Uploading image...', 'info', null); try { const response = await fetch(imgbbUploadUrl, { method: 'POST', body: formData }); if (!response.ok) { const errorData = await response.json().catch(() => ({})); throw new Error(`ImgBB upload failed: ${response.statusText} - ${errorData?.error?.message || 'Check ImgBB key/service'}`); } const result = await response.json(); if (result.success && result.data?.url) { showStatus('Image uploaded successfully!', 'success'); return result.data.url; } else { throw new Error('ImgBB upload succeeded but no URL was returned.'); } } catch (error) { console.error("ImgBB Upload Error:", error); showStatus(`Image upload failed: ${error.message}`, 'error', 5000); return null; } }
-        async function saveEntryToFirebase(text, imageUrl) { /* ... */ if (!entriesRef) { showStatus('Firebase database reference is not available.', 'error', 5000); console.error("Firebase entriesRef is null. Cannot save."); return; } const newEntry = { text: text, imageUrl: imageUrl, timestamp: firebase.database.ServerValue.TIMESTAMP }; showStatus('Saving data to Firebase...', 'info', null); try { await entriesRef.push(newEntry); showStatus('Entry saved successfully!', 'success'); clearInputs(); } catch (error) { console.error("FIREBASE SAVE FAILED:", error); if (error.code === 'PERMISSION_DENIED') { showStatus('Save failed: Permission denied. Check Firebase Rules.', 'error', 6000); } else { showStatus(`Failed to save entry: ${error.message}`, 'error', 5000); } } }
+        async function uploadImageToImgBB(file) { if (!imgbbApiKey || imgbbApiKey.length < 30) { showStatus('ImgBB API Key is missing or invalid.', 'error', 5000); return null;} const formData = new FormData(); formData.append('key', imgbbApiKey); formData.append('image', file); showStatus('Uploading image...', 'info', null); try { const response = await fetch(imgbbUploadUrl, { method: 'POST', body: formData }); if (!response.ok) { const errorData = await response.json().catch(() => ({})); throw new Error(`ImgBB upload failed: ${response.statusText} - ${errorData?.error?.message || 'Check ImgBB key/service'}`); } const result = await response.json(); if (result.success && result.data?.url) { showStatus('Image uploaded successfully!', 'success'); return result.data.url; } else { throw new Error('ImgBB upload succeeded but no URL was returned.'); } } catch (error) { console.error("ImgBB Upload Error:", error); showStatus(`Image upload failed: ${error.message}`, 'error', 5000); return null; } }
+        async function saveEntryToFirebase(text, imageUrl) { if (!entriesRef) { showStatus('Firebase database reference is not available.', 'error', 5000); console.error("Firebase entriesRef is null. Cannot save."); return; } const newEntry = { text: text, imageUrl: imageUrl, timestamp: firebase.database.ServerValue.TIMESTAMP }; showStatus('Saving data to Firebase...', 'info', null); try { await entriesRef.push(newEntry); showStatus('Entry saved successfully!', 'success'); clearInputs(); } catch (error) { console.error("FIREBASE SAVE FAILED:", error); if (error.code === 'PERMISSION_DENIED') { showStatus('Save failed: Permission denied. Check Firebase Rules.', 'error', 6000); } else { showStatus(`Failed to save entry: ${error.message}`, 'error', 5000); } } }
 
-         // ** Updated handleSaveClick with Passcode **
-         async function handleSaveClick() {
-            const savePasscode = prompt("Enter Passcode to Save:");
-            if (savePasscode === null) { showStatus("Save cancelled.", "info", 2000); return; }
-            if (savePasscode !== EDIT_PASSCODE) { showStatus("Incorrect Passcode. Save failed.", "error", 3000); return; }
-            if (saveButton) saveButton.disabled = true; const text = textInput?.value.trim() ?? ""; const imageFile = imageInput?.files[0]; if (!text && !imageFile) { showStatus('Please enter text or choose an image.', 'error'); if (saveButton) saveButton.disabled = false; return; } showStatus('Processing...', 'info', null); let imageUrl = null; if (imageFile) { imageUrl = await uploadImageToImgBB(imageFile); if (!imageUrl) { if (saveButton) saveButton.disabled = false; return; } } if (text || imageUrl) { await saveEntryToFirebase(text, imageUrl); } else { showStatus('Nothing to save.', 'info'); } if (saveButton) saveButton.disabled = false;
+        // ** Refactored Save Logic **
+        async function proceedWithSave(saveData) {
+             if (saveButton) saveButton.disabled = true; // Disable main save button during operation
+             const { text, imageFile } = saveData;
+             showStatus('Processing...', 'info', null); let imageUrl = null;
+             if (imageFile) { imageUrl = await uploadImageToImgBB(imageFile); if (!imageUrl) { if (saveButton) saveButton.disabled = false; return; } } // Re-enable on upload fail
+             if (text || imageUrl) { await saveEntryToFirebase(text, imageUrl); } else { showStatus('Nothing to save.', 'info'); }
+             if (saveButton) saveButton.disabled = false; // Re-enable after completion
         }
 
-        function openModal(entryId, currentText) { if (!modalOverlay) return; modalEntryIdInput.value = entryId; modalEditTextarea.value = currentText; modalPasscodeInput.value = ''; modalErrorMessage.style.display = 'none'; modalOverlay.classList.add('modal-visible'); modalEditTextarea.focus(); }
-        function closeModal() { if (!modalOverlay) return; modalOverlay.classList.remove('modal-visible'); }
+         // ** Original handleSaveClick now requests passcode **
+         async function handleSaveClick() {
+            const text = textInput?.value.trim() ?? "";
+            const imageFile = imageInput?.files[0]; // Get file reference
+            if (!text && !imageFile) {
+                showStatus('Please enter text or choose an image.', 'error');
+                return;
+            }
+            // Store data needed for saving and request passcode
+            requestPasscode('Save', { text: text, imageFile: imageFile });
+        }
+
+        // ** Delete Logic (called after passcode) **
+        function proceedWithDelete(deleteData) {
+            const { entryId } = deleteData;
+            const deleteReason = prompt("(Optional) Enter reason for deletion:");
+            if (confirm("Are you SURE you want to permanently delete this note?")) {
+                if (entriesRef) {
+                    entriesRef.child(entryId).remove()
+                        .then(() => {
+                            showStatus("Note deleted successfully.", "success", 2000);
+                            console.log(`Entry ${entryId} deleted. Reason: ${deleteReason || 'N/A'}`);
+                        })
+                        .catch((error) => {
+                            console.error("Firebase delete error:", error);
+                            showStatus(`Error deleting note: ${error.message}`, "error", 4000);
+                        });
+                } else {
+                    showStatus("Cannot delete: Database connection error.", "error", 4000);
+                }
+            } else {
+                showStatus("Delete cancelled.", "info", 2000);
+            }
+        }
+
+        // --- Modal Functions ---
+        function openModal(entryId, currentText) { /* Edit Modal */ if (!modalOverlay) return; modalEntryIdInput.value = entryId; modalEditTextarea.value = currentText; modalPasscodeInput.value = ''; modalErrorMessage.style.display = 'none'; modalOverlay.classList.add('modal-visible'); modalEditTextarea.focus(); }
+        function closeModal() { /* Edit Modal */ if (!modalOverlay) return; modalOverlay.classList.remove('modal-visible'); }
+
+        // --- Passcode Modal Functions ---
+        function requestPasscode(action, data) {
+             if (!passcodeModalOverlay) return;
+             console.log("Requesting passcode for action:", action, "with data:", data);
+             passcodeModalActionInput.value = action; // Store action type
+             currentActionData = data; // Store data needed later
+
+             // Customize modal appearance
+             if (action === 'Save') {
+                 passcodeModalTitle.textContent = 'Enter Passcode to Save';
+                 passcodeModalConfirmButton.textContent = 'Confirm Save';
+             } else if (action === 'Delete') {
+                 passcodeModalTitle.textContent = 'Enter Passcode to Delete';
+                 passcodeModalConfirmButton.textContent = 'Confirm Delete';
+             } else {
+                 passcodeModalTitle.textContent = 'Enter Passcode';
+                 passcodeModalConfirmButton.textContent = 'Confirm';
+             }
+
+             passcodeModalInput.value = '';
+             passcodeModalError.style.display = 'none';
+             passcodeModalOverlay.classList.add('modal-visible');
+             passcodeModalInput.focus();
+        }
+
+        function closePasscodeModal() {
+             if (!passcodeModalOverlay) return;
+             passcodeModalOverlay.classList.remove('modal-visible');
+             currentActionData = null; // Clear stored data
+             passcodeModalActionInput.value = '';
+        }
+
 
         let entryRenderCount = 0; // For staggering animation
         function renderEntry(entryData, entryId, isExistingDiv = null) {
@@ -219,16 +323,23 @@
              // Image Container
              if (entryImageUrl) { const imageContainer = document.createElement('div'); imageContainer.classList.add('entry-image-container'); const imgElement = document.createElement('img'); imgElement.classList.add('entry-image'); imgElement.src = entryImageUrl; imgElement.alt = "Saved Note Image"; imgElement.loading = "lazy"; imgElement.onerror = () => { imageContainer.innerHTML = '<span class="img-error-text">[Image unavailable]</span>'; }; imageContainer.appendChild(imgElement); entryDiv.appendChild(imageContainer); }
 
-             // Comments Section Removed
-
              // Metadata (Buttons & Timestamp)
              const metadataDiv = document.createElement('div'); metadataDiv.classList.add('metadata'); const buttonGroupDiv = document.createElement('div'); buttonGroupDiv.classList.add('button-group');
+             // Edit Button
              if (entryText) { const editButton = document.createElement('button'); editButton.textContent = 'Edit'; editButton.classList.add('edit-button', 'button-base'); editButton.addEventListener('click', () => { const currentTextInDOM = entryDiv.querySelector('.entry-text')?.textContent ?? entryText; openModal(entryId, currentTextInDOM); }); buttonGroupDiv.appendChild(editButton); }
+             // Copy Button
              if (entryText) { const copyButton = document.createElement('button'); copyButton.textContent = 'Copy Text'; copyButton.classList.add('copy-button', 'button-base'); copyButton.addEventListener('click', () => { /* ... copy logic ... */ const textToCopy = entryDiv.querySelector('.entry-text')?.textContent ?? entryText; navigator.clipboard.writeText(textToCopy).then(() => { copyButton.textContent = 'Copied!'; copyButton.classList.add('copied'); setTimeout(() => { copyButton.textContent = 'Copy Text'; copyButton.classList.remove('copied'); }, 1500); }).catch(err => { console.error('Failed to copy text: ', err); copyButton.textContent = 'Error'; setTimeout(() => { copyButton.textContent = 'Copy Text'; }, 2000); }); }); buttonGroupDiv.appendChild(copyButton); }
+             // PDF Button
              const pdfButton = document.createElement('button'); pdfButton.textContent = 'Save PDF'; pdfButton.classList.add('pdf-button', 'button-base'); pdfButton.addEventListener('click', () => { /* ... pdf logic ... */ pdfButton.textContent = 'Creating...'; pdfButton.disabled = true; try { if (typeof window.jspdf === 'undefined' || typeof window.jspdf.jsPDF === 'undefined') { throw new Error('jsPDF library is not loaded.'); } const { jsPDF } = window.jspdf; const doc = new jsPDF(); const textToPrint = entryDiv.querySelector('.entry-text')?.textContent ?? entryText; /* PDF uses dark text on white bg */ doc.setFontSize(18); doc.setTextColor(0); doc.text("RK NoteBOX Entry", 14, 22); doc.setFontSize(11); doc.setTextColor(100); const saveDate = entryData.timestamp ? new Date(entryData.timestamp).toLocaleString() : 'N/A'; doc.text(`Saved: ${saveDate}`, 14, 30); doc.setDrawColor(200); doc.setLineWidth(0.1).line(14, 32, doc.internal.pageSize.getWidth() - 14, 32); doc.setFontSize(12); doc.setTextColor(0); const pageH = doc.internal.pageSize.getHeight(); const margin = 15; const usableHeight = pageH - (2 * margin); let currentY = 45; const lines = doc.splitTextToSize(textToPrint, doc.internal.pageSize.getWidth() - (2 * margin)); const lineHeight = doc.getLineHeight(); for(let i=0; i<lines.length; i++){ if (currentY + lineHeight > pageH - margin && i < lines.length -1 ) { doc.addPage(); currentY = margin; doc.setFontSize(12); doc.setTextColor(0); } doc.text(lines[i], margin, currentY); currentY += lineHeight; } let finalY = currentY; if (entryData.imageUrl) { doc.setTextColor(100); doc.textWithLink('Image URL (Click)', margin, finalY + 10, { url: entryData.imageUrl }); doc.setTextColor(50); doc.setFontSize(9); doc.setTextColor(150); doc.text("[Note: Direct image embedding is often blocked by browser security (CORS). URL provided.]", margin, finalY + 18); } doc.save(`RK_NoteBOX_${entryId.substring(0, 6)}.pdf`); } catch(err) { console.error("PDF Generation Error:", err); showStatus("Error creating PDF.", "error", 3000); } finally { pdfButton.textContent = 'Save PDF'; pdfButton.disabled = false; } }); buttonGroupDiv.appendChild(pdfButton);
-             const deleteButton = document.createElement('button'); deleteButton.textContent = 'Delete'; deleteButton.classList.add('delete-button', 'button-base'); deleteButton.addEventListener('click', () => { /* ... delete logic ... */ const deletePasscode = prompt(`Enter passcode to delete this note:`); if (deletePasscode === null) { showStatus("Delete cancelled.", "info", 2000); return; } if (deletePasscode !== EDIT_PASSCODE) { showStatus("Incorrect Passcode. Delete failed.", "error", 3000); return; } const deleteReason = prompt("(Optional) Enter reason for deletion:"); if (confirm("Are you SURE you want to permanently delete this note?")) { if (entriesRef) { entriesRef.child(entryId).remove().then(() => { showStatus("Note deleted successfully.", "success", 2000); console.log(`Entry ${entryId} deleted. Reason: ${deleteReason || 'N/A'}`); }).catch((error) => { console.error("Firebase delete error:", error); showStatus(`Error deleting note: ${error.message}`, "error", 4000); }); } else { showStatus("Cannot delete: Database connection error.", "error", 4000); } } else { showStatus("Delete cancelled.", "info", 2000); } }); buttonGroupDiv.appendChild(deleteButton);
-             metadataDiv.appendChild(buttonGroupDiv); const timeSpan = document.createElement('span'); timeSpan.classList.add('entry-timestamp'); if(entryData.timestamp) { try { timeSpan.textContent = `Saved: ${new Date(entryData.timestamp).toLocaleString()}`; } catch (e) { timeSpan.textContent = 'Saved: Invalid date'; } } else { timeSpan.textContent = ''; } metadataDiv.appendChild(timeSpan); entryDiv.appendChild(metadataDiv);
-             if (isNew) { savedEntriesContainer.prepend(entryDiv); setTimeout(() => { entryDiv.classList.add('visible'); }, 50); } return entryDiv;
+            // Delete Button (Calls requestPasscode)
+            const deleteButton = document.createElement('button'); deleteButton.textContent = 'Delete'; deleteButton.classList.add('delete-button', 'button-base');
+            deleteButton.addEventListener('click', () => {
+                requestPasscode('Delete', { entryId: entryId }); // Pass action and data
+            });
+            buttonGroupDiv.appendChild(deleteButton);
+
+            metadataDiv.appendChild(buttonGroupDiv); const timeSpan = document.createElement('span'); timeSpan.classList.add('entry-timestamp'); if(entryData.timestamp) { try { timeSpan.textContent = `Saved: ${new Date(entryData.timestamp).toLocaleString()}`; } catch (e) { timeSpan.textContent = 'Saved: Invalid date'; } } else { timeSpan.textContent = ''; } metadataDiv.appendChild(timeSpan); entryDiv.appendChild(metadataDiv);
+            if (isNew) { savedEntriesContainer.prepend(entryDiv); setTimeout(() => { entryDiv.classList.add('visible'); }, 50); } return entryDiv;
         }
 
         function loadAndDisplayEntries() { /* ... (load/display logic with listeners remains same) ... */
@@ -243,12 +354,58 @@
         // --- Event Listeners ---
         if (saveButton) { saveButton.addEventListener('click', handleSaveClick); } else { console.error("Save button not found!"); }
         if (imageInput) { imageInput.addEventListener('change', (event) => { const file = event.target.files[0]; if (file && imagePreview) { const reader = new FileReader(); reader.onload = function(e) { imagePreview.src = e.target.result; imagePreview.style.display = 'block'; }; reader.readAsDataURL(file); } else if (imagePreview) { imagePreview.style.display = 'none'; imagePreview.src = '#'; } }); } else { console.error("Image input not found!"); }
-        // Modal Listeners
+        // Edit Modal Listeners
         if (modalSaveButton) { modalSaveButton.addEventListener('click', () => { /* ... modal save logic ... */ const entryId = modalEntryIdInput.value; const newText = modalEditTextarea.value; const enteredPasscode = modalPasscodeInput.value; modalErrorMessage.style.display = 'none'; if (enteredPasscode !== EDIT_PASSCODE) { modalErrorMessage.textContent = 'Incorrect Passcode!'; modalErrorMessage.style.display = 'block'; modalPasscodeInput.value = ''; modalPasscodeInput.focus(); return; } if (entryId && newText !== null && entriesRef) { console.log(`Attempting to update entry ${entryId} with passcode.`); entriesRef.child(entryId).update({ text: newText }).then(() => { showStatus('Note updated successfully!', 'success', 2000); closeModal(); }).catch(err => { console.error("Firebase update error:", err); modalErrorMessage.textContent = `Error updating: ${err.message}`; modalErrorMessage.style.display = 'block'; }); } else { modalErrorMessage.textContent = 'Could not save. Entry ID or text missing.'; modalErrorMessage.style.display = 'block'; } }); }
         if (modalCancelButton) { modalCancelButton.addEventListener('click', closeModal); }
         if (modalCloseButton) { modalCloseButton.addEventListener('click', closeModal); }
         if (modalOverlay) { modalOverlay.addEventListener('click', (event) => { if (event.target === modalOverlay) { closeModal(); } }); }
-        // Theme Toggle Listener Removed
+
+        // ** Passcode Modal Listeners **
+         if (passcodeModalConfirmButton) {
+             passcodeModalConfirmButton.addEventListener('click', () => {
+                 const enteredPasscode = passcodeModalInput.value;
+                 const action = passcodeModalActionInput.value;
+                 const data = currentActionData; // Use the globally stored data
+
+                 passcodeModalError.style.display = 'none'; // Hide error initially
+
+                 if (enteredPasscode !== EDIT_PASSCODE) {
+                     passcodeModalError.textContent = 'Incorrect Passcode!';
+                     passcodeModalError.style.display = 'block';
+                     passcodeModalInput.value = '';
+                     passcodeModalInput.focus();
+                     return;
+                 }
+
+                 // Passcode correct, proceed with stored action
+                 closePasscodeModal(); // Close the modal first
+
+                 if (action === 'Save' && data) {
+                     console.log("Passcode correct for Save. Proceeding...");
+                     proceedWithSave(data); // Call the refactored save logic
+                 } else if (action === 'Delete' && data) {
+                     console.log("Passcode correct for Delete. Proceeding...");
+                     proceedWithDelete(data); // Call the refactored delete logic
+                 } else {
+                     console.error("Passcode confirmed, but action or data is invalid.", action, data);
+                     showStatus("An unexpected error occurred.", "error");
+                 }
+             });
+         }
+         if (passcodeModalCancelButton) {
+             passcodeModalCancelButton.addEventListener('click', closePasscodeModal);
+         }
+         if (passcodeModalCloseButton) {
+             passcodeModalCloseButton.addEventListener('click', closePasscodeModal);
+         }
+         if (passcodeModalOverlay) {
+              passcodeModalOverlay.addEventListener('click', (event) => {
+                  if (event.target === passcodeModalOverlay) {
+                      closePasscodeModal();
+                  }
+              });
+         }
+
 
         // --- Initial Load ---
         document.addEventListener('DOMContentLoaded', () => {
