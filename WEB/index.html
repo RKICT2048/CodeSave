@@ -1,1 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RK NoteBOX</title>
 
+    <style>
+        /* --- Color & Theme Variables (Dark Theme Default) --- */
+        :root {
+            --color-bg: #1A1D24; --color-surface: #282C34; --color-text-primary: #E0E6F1;
+            --color-text-secondary: #9AB; --color-border: #3A3F4B; --color-border-hover: #555c68;
+            --color-accent: #61DAFB; --color-accent-hover: #88EEFF; --color-secondary-accent: #58D68D;
+            --color-secondary-accent-hover: #82E0AA; --color-button-text: #1A1D24; --color-button-text-light: #FFFFFF;
+            --color-copy-bg: #4A5568; --color-copy-hover: #606F86; --color-edit-bg: #D69E2E;
+            --color-edit-hover: #ECC94B; --color-pdf-bg: #9B59B6; --color-pdf-hover: #AF7AC5;
+            --color-delete-bg: #E74C3C; --color-delete-hover-bg: #C0392B; --color-cancel-bg: #718096;
+            --color-cancel-hover: #A0AEC0; --color-error: #FC8181; --color-success: #9AE6B4;
+            --color-info-bg: rgba(97, 218, 251, 0.15); --color-info-text: var(--color-accent);
+            --color-input-bg: #1E2229; --color-shadow-light: rgba(97, 218, 251, 0.1);
+            --color-shadow-medium: rgba(0, 0, 0, 0.3); --color-modal-overlay: rgba(26, 29, 36, 0.8);
+            --color-focus-ring: rgba(97, 218, 251, 0.3); --color-whatsapp: #25D366;
+            --border-radius-sm: 4px; --border-radius-md: 8px; --border-radius-lg: 12px;
+            --transition-speed: 0.3s; --transition-func: ease-in-out; --text-minimize-height: 100px;
+        }
+        /* --- Base Styles & Typography --- */
+        *, *::before, *::after { box-sizing: border-box; }
+        html { height: 100%; }
+        body { font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; margin: 0; padding: 30px 15px; padding-bottom: 100px; color: var(--color-text-primary); background-color: var(--color-bg); line-height: 1.7; font-size: 16px; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; transition: background-color var(--transition-speed) var(--transition-func), color var(--transition-speed) var(--transition-func); display: flex; flex-direction: column; min-height: 100vh; }
+        .main-container, #savedEntriesContainer { max-width: 850px; margin-left: auto; margin-right: auto; padding: 0 10px; width: 100%; }
+        #savedEntriesContainer { flex-grow: 1; }
+        /* --- Title & Animation --- */
+        @keyframes gradientText { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        h1 { font-size: 2.8rem; font-weight: 700; color: transparent; text-align: center; margin-bottom: 1.5em; letter-spacing: -0.5px; background: linear-gradient(90deg, var(--color-accent), var(--color-secondary-accent), var(--color-text-secondary), var(--color-accent)); background-size: 300% 100%; -webkit-background-clip: text; background-clip: text; animation: gradientText 10s ease infinite; }
+        h2 { font-size: 1.8rem; font-weight: 600; color: var(--color-text-secondary); text-align: center; margin-top: 3em; margin-bottom: 1.5em; border-bottom: 1px solid var(--color-border); padding-bottom: 0.6em; transition: color var(--transition-speed) var(--transition-func), border-color var(--transition-speed) var(--transition-func); }
+        /* --- Input Area --- */
+        .input-container { background-color: var(--color-surface); padding: 30px; border-radius: var(--border-radius-lg); box-shadow: 0 5px 20px var(--color-shadow-medium); margin-bottom: 40px; display: flex; flex-direction: column; align-items: center; border: 1px solid var(--color-border); transition: background-color var(--transition-speed) var(--transition-func), border-color var(--transition-speed) var(--transition-func), box-shadow var(--transition-speed) var(--transition-func); }
+        textarea#textInput { width: 100%; min-height: 140px; padding: 15px; margin-bottom: 20px; border: 1px solid var(--color-border); border-radius: var(--border-radius-md); font-size: 1rem; background-color: var(--color-input-bg); color: var(--color-text-primary); resize: vertical; transition: border-color var(--transition-speed) var(--transition-func), box-shadow var(--transition-speed) var(--transition-func), background-color var(--transition-speed) var(--transition-func), color var(--transition-speed) var(--transition-func); }
+        textarea#textInput:focus-visible, .modal-content textarea:focus-visible, .modal-content input[type="password"]:focus-visible { outline: none; border-color: var(--color-accent); box-shadow: 0 0 0 3px var(--color-focus-ring); }
+        /* --- Button Styling --- */
+        .button-base, .file-label { display: inline-flex; align-items: center; justify-content: center; padding: 12px 24px; color: var(--color-button-text-light); border: none; border-radius: var(--border-radius-md); cursor: pointer; text-align: center; margin-bottom: 10px; font-size: 1rem; font-weight: 600; transition: background-color var(--transition-speed) var(--transition-func), transform var(--transition-speed) var(--transition-func), box-shadow var(--transition-speed) var(--transition-func); box-shadow: 0 3px 6px var(--color-shadow-medium); text-decoration: none; line-height: 1.2; } .button-base:hover, .file-label:hover { box-shadow: 0 5px 10px var(--color-shadow-medium); transform: translateY(-2px); } .button-base:active, .file-label:active { transform: translateY(0px); box-shadow: 0 2px 4px var(--color-shadow-medium); } .button-base:disabled { background-color: #555 !important; color: #999 !important; cursor: not-allowed; transform: none; box-shadow: none; opacity: 0.7; } .button-base:focus-visible, .file-label:focus-visible { outline: none; box-shadow: 0 0 0 3px var(--color-focus-ring); }
+        .file-label { background-color: var(--color-secondary-accent); color: var(--color-bg); margin-top: 10px; } .file-label:hover { background-color: var(--color-secondary-accent-hover); }
+        button#saveButton { background-color: var(--color-accent); margin-top: 20px; color: var(--color-bg); } button#saveButton:hover { background-color: var(--color-accent-hover); }
+        /* Card Button Styles */
+        .copy-button, .edit-button, .pdf-button, .delete-button { padding: 6px 12px; font-size: 0.85rem; margin-top: 0; margin-right: 0; font-weight: 500; flex-shrink: 0; color: var(--color-button-text-light); }
+        .copy-button { background-color: var(--color-copy-bg); } .copy-button:hover { background-color: var(--color-copy-hover); } .copy-button.copied { background-color: var(--color-success); color: var(--color-button-text) !important; cursor: default; }
+        .edit-button { background-color: var(--color-edit-bg); } .edit-button:hover { background-color: var(--color-edit-hover); }
+        .pdf-button { background-color: var(--color-pdf-bg); } .pdf-button:hover { background-color: var(--color-pdf-hover); }
+        .delete-button { background-color: var(--color-delete-bg); } .delete-button:hover { background-color: var(--color-delete-hover-bg); }
+        input[type="file"] { display: none; }
+        #imagePreview { display: block; margin-top: 15px; border: 1px solid var(--color-border); padding: 5px; border-radius: var(--border-radius-md); background-color: var(--color-input-bg); max-height: 100px; max-width: 100%; object-fit: cover; transition: border-color var(--transition-speed) var(--transition-func), background-color var(--transition-speed) var(--transition-func); }
+        #statusMessage { margin-top: 20px; font-weight: 500; min-height: 1.4em; text-align: center; width: 100%; padding: 10px; border-radius: var(--border-radius-md); opacity: 0; transform: scale(0.95); transition: opacity 0.3s var(--transition-func), transform 0.3s var(--transition-func), background-color 0.3s var(--transition-func), color 0.3s var(--transition-func); color: var(--color-button-text-light); } #statusMessage.visible { opacity: 1; transform: scale(1); } #statusMessage.error { background-color: var(--color-error); } #statusMessage.success { background-color: var(--color-success); } #statusMessage.info { background-color: var(--color-info-bg); color: var(--color-info-text); }
+        /* --- Saved Entries --- */
+        #savedEntriesContainer { background-color: transparent; padding: 0; border-radius: 0; box-shadow: none; border: none; } #savedEntriesContainer > p.no-entries-placeholder { color: var(--color-text-secondary); text-align: center; margin-top: 3em; font-size: 1.1rem; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translate3d(0, 30px, 0); } to { opacity: 1; transform: translate3d(0, 0, 0); } }
+        .entry { background-color: var(--color-surface); border: 1px solid var(--color-border); padding: 25px; margin-bottom: 30px; border-radius: var(--border-radius-lg); overflow: visible; position: relative; box-shadow: 0 4px 15px var(--color-shadow-light); opacity: 0; transition: background-color var(--transition-speed) var(--transition-func), box-shadow var(--transition-speed) var(--transition-func), transform var(--transition-speed) var(--transition-func), border-color var(--transition-speed) var(--transition-func); } .entry.visible { animation: fadeInUp 0.65s var(--transition-func) forwards; animation-delay: var(--animation-delay, 0s); } .entry:hover { box-shadow: 0 6px 25px var(--color-shadow-medium); transform: translateY(-4px); border-color: var(--color-border-hover); }
+        .entry-text-wrapper { position: relative; margin-bottom: 10px; } .entry p.entry-text { margin: 0; white-space: pre-wrap; color: var(--color-text-primary); font-size: 1rem; line-height: 1.7; transition: color var(--transition-speed) var(--transition-func), max-height 0.4s ease-in-out; overflow: hidden; position: relative; } p.entry-text.text-minimized { max-height: var(--text-minimize-height); } p.entry-text:not(.text-minimized) { max-height: 1000px; }
+        p.entry-text.text-minimized::after { content: ""; position: absolute; bottom: 0; left: 0; right: 0; height: 30px; background: linear-gradient(to bottom, transparent, var(--color-surface)); pointer-events: none; transition: background var(--transition-speed) var(--transition-func); } p.entry-text:not(.text-minimized)::after { opacity: 0; }
+        .toggle-text-button { display: block; width: fit-content; background: none; border: 1px solid var(--color-border); color: var(--color-text-secondary); padding: 3px 8px; font-size: 1rem; line-height: 1; border-radius: var(--border-radius-sm); cursor: pointer; margin-top: 8px; transition: background-color var(--transition-speed) var(--transition-func), color var(--transition-speed) var(--transition-func), border-color var(--transition-speed) var(--transition-func); } .toggle-text-button:hover { background-color: var(--color-input-bg); color: var(--color-text-primary); border-color: var(--color-border-hover);}
+        .entry-image-container { width: 100%; height: 200px; background-color: var(--color-input-bg); border-radius: var(--border-radius-md); margin-top: 20px; margin-bottom: 20px; overflow: hidden; position: relative; border: 1px solid var(--color-border); transition: background-color var(--transition-speed) var(--transition-func), border-color var(--transition-speed) var(--transition-func); } .entry img.entry-image { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center; border-radius: 0; border: none; margin: 0; }
+        .entry .metadata { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 15px; margin-top: 20px; padding-top: 15px; border-top: 1px solid var(--color-border); transition: border-color var(--transition-speed) var(--transition-func); } .entry .metadata .button-group { display: flex; flex-wrap: wrap; gap: 8px; flex-grow: 1; } .entry .metadata span.entry-timestamp { display: block; font-size: 0.85rem; color: var(--color-text-secondary); margin: 0; margin-left: auto; white-space: nowrap; text-align: right; transition: color var(--transition-speed) var(--transition-func); } .entry .img-error-text { font-style: italic; color: var(--color-text-secondary); font-size: 0.9rem; position: absolute; top: 10px; left: 10px; background: rgba(255,255,255,0.8); color: #333; padding: 2px 5px; border-radius: 3px; }
+        /* --- Modal Styles --- */
+        .modal-overlay { background-color: var(--color-modal-overlay); backdrop-filter: blur(5px); position: fixed; top: 0; left: 0; width: 100%; height: 100%; display: none; align-items: center; justify-content: center; z-index: 1000; opacity: 0; transition: opacity 0.3s ease; } .modal-overlay.modal-visible { display: flex; opacity: 1; } .modal-content { padding: 35px; border-radius: var(--border-radius-lg); box-shadow: 0 8px 30px var(--color-shadow-medium); width: 90%; max-width: 550px; position: relative; border: 1px solid var(--color-border); transform: scale(0.95) translateY(-10px); transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), background-color var(--transition-speed) var(--transition-func), border-color var(--transition-speed) var(--transition-func); background-color: var(--color-surface); } .modal-overlay.modal-visible .modal-content { transform: scale(1) translateY(0); } .modal-close { position: absolute; top: 15px; right: 15px; font-size: 2rem; font-weight: lighter; color: var(--color-text-secondary); cursor: pointer; border: none; background: none; line-height: 1; padding: 0; transition: color 0.2s ease, transform 0.2s ease; } .modal-close:hover { color: var(--color-text-primary); transform: rotate(90deg); } .modal-content h3 { color: var(--color-text-primary); margin-top: 0; margin-bottom: 25px; text-align: center; font-weight: 600; font-size: 1.5rem; transition: color var(--transition-speed) var(--transition-func); } .modal-content label { display: block; margin-bottom: 8px; font-weight: 500; color: var(--color-text-secondary); font-size: 0.9rem; transition: color var(--transition-speed) var(--transition-func); } .modal-content textarea, .modal-content input[type="password"], .modal-content input[type="text"] { width: 100%; padding: 12px; margin-bottom: 18px; border: 1px solid var(--color-border); border-radius: var(--border-radius-md); font-size: 1rem; color: var(--color-text-primary); box-sizing: border-box; background-color: var(--color-input-bg); transition: border-color var(--transition-speed) var(--transition-func), background-color var(--transition-speed) var(--transition-func), color var(--transition-speed) var(--transition-func); } .modal-content textarea { min-height: 160px; } .modal-content textarea:focus-visible, .modal-content input[type="password"]:focus-visible { border-color: var(--color-accent); box-shadow: 0 0 0 3px var(--color-focus-ring); } .modal-actions { display: flex; justify-content: flex-end; gap: 12px; margin-top: 25px; } .modal-button { padding: 10px 20px; font-size: 0.95rem; } #modalSaveButton { background-color: var(--color-accent); color: var(--color-bg); } #modalSaveButton:hover { background-color: var(--color-accent-hover); } #modalCancelButton { background-color: var(--color-cancel-bg); } #modalCancelButton:hover { background-color: var(--color-cancel-hover); } #modalErrorMessage { color: var(--color-error); font-size: 0.9rem; margin-top: 18px; text-align: center; display: none; font-weight: 500; }
+        /* --- WhatsApp FAB --- */
+        .whatsapp-fab { position: fixed; bottom: 25px; right: 25px; width: 60px; height: 60px; background-color: var(--color-whatsapp); color: #FFF; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); z-index: 999; transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; text-decoration: none; /* Remove underline */ font-size: 2rem; /* Adjust emoji size */ }
+        .whatsapp-fab:hover { transform: scale(1.1); box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4); }
+        /* --- Footer --- */
+        footer { margin-top: 50px; padding: 25px 15px; text-align: center; border-top: 1px solid var(--color-border); transition: border-color var(--transition-speed) var(--transition-func); }
+        footer a {
+            font-size: 0.85rem; /* Small font */
+            font-weight: 500;
+            color: transparent; /* Hide base color for gradient */
+            text-decoration: none;
+             /* Animated Gray Gradient Text */
+            background: linear-gradient(90deg, var(--color-text-secondary), #BDC3C7, var(--color-text-secondary));
+            background-size: 250% 100%;
+            -webkit-background-clip: text; background-clip: text;
+            animation: gradientText 12s ease infinite; /* Slower animation */
+             transition: opacity var(--transition-speed) var(--transition-func);
+        }
+         footer a:hover {
+            opacity: 0.8; /* Simple hover effect */
+         }
+         footer p { margin: 0; /* Remove default margin from p inside footer if using */ }
+
+        /* --- Responsiveness --- */
+        @media (max-width: 768px) { body { padding: 20px 10px 90px 10px; } h1 { font-size: 2.2rem; } h2 { font-size: 1.5rem; } .input-container, .entry { padding: 20px; } textarea#textInput { min-height: 120px; } .button-base, .file-label { padding: 10px 18px; font-size: 0.95rem; } .copy-button, .edit-button, .pdf-button, .delete-button { padding: 5px 10px; font-size: 0.8rem; } .entry .metadata { flex-direction: column; align-items: flex-start; } .entry .metadata .button-group { width: 100%; justify-content: flex-start; margin-bottom: 10px; } .entry .metadata span.entry-timestamp { margin-left: 0; width: 100%; text-align: left; margin-top: 5px; } .modal-content { padding: 25px; width: 95%; } .modal-content h3 { font-size: 1.3rem; } .modal-actions { justify-content: center; } .whatsapp-fab { width: 50px; height: 50px; bottom: 15px; right: 15px; font-size: 1.6rem; } footer { margin-top: 30px; padding: 20px 10px; font-size: 0.8rem;} }
+        @media (max-width: 480px) { h1 { font-size: 1.8rem; } .button-base, .file-label { width: 100%; justify-content: center; } button#saveButton { margin-top: 15px; } .modal-actions { flex-direction: column; gap: 10px; } .modal-button { width: 100%; } .entry-image-container { height: 150px; } footer { font-size: 0.75rem;} }
+
+    </style>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+</head>
+<body> <div class="main-container">
+        <h1>RK NoteBOX</h1>
+
+        <div class="input-container">
+            <textarea id="textInput" placeholder="Enter your text note here..."></textarea>
+            <label for="imageInput" class="file-label button-base">Choose Image (Optional)</label>
+            <input type="file" id="imageInput" accept="image/*">
+            <img id="imagePreview" src="#" alt="Image Preview" style="display: none;"/>
+            <button id="saveButton" class="button-base">Save Entry</button>
+            <p id="statusMessage"></p>
+        </div>
+
+        <h2>Saved Entries</h2>
+    </div>
+
+    <div id="savedEntriesContainer">
+        <p class="no-entries-placeholder">Loading entries...</p>
+    </div>
+
+    <div id="modalOverlay" class="modal-overlay">
+        <div id="editModal" class="modal-content">
+            <button id="modalCloseButton" class="modal-close">&times;</button>
+            <h3>Edit Note</h3>
+            <input type="hidden" id="modalEntryId">
+            <div>
+                <label for="modalEditTextarea">Note Text:</label>
+                <textarea id="modalEditTextarea"></textarea>
+            </div>
+            <div>
+                <label for="modalPasscode">Passcode:</label>
+                <input type="password" id="modalPasscode" required>
+            </div>
+            <div id="modalErrorMessage">Incorrect Passcode!</div>
+            <div class="modal-actions">
+                <button id="modalCancelButton" class="modal-button button-base">Cancel</button>
+                <button id="modalSaveButton" class="modal-button button-base">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
+    <a href="https://wa.me/94775944554?text=Hi%20Ravindu%20sir%20%F0%9F%91%8B%2C%20I%20need%20help%20with%20the%20Notebox%20website%20%F0%9F%96%A5%EF%B8%8F.%20Please%20assist%20me%20"
+       id="whatsappLink" class="whatsapp-fab" target="_blank" title="WhatsApp Support">
+        💬 </a>
+
+    <footer>
+        <a href="https://t.me/MrLAXAN" target="_blank" rel="noopener noreferrer">
+            DEVELOPED BY LAKSHAN 👨‍💻🚀
+        </a>
+    </footer>
+
+    <script>
+        // --- Configuration (YOUR KEYS) ---
+        // ** WARNING: INSECURE TO EXPOSE KEYS CLIENT-SIDE **
+        const firebaseConfig = { /* Ensure your correct config is here */
+          apiKey: "AIzaSyDEJT4N2gyhPbrmIyVP15jDZEJz8IZRQog",
+          authDomain: "itcode-save.firebaseapp.com",
+          databaseURL: "https://itcode-save-default-rtdb.firebaseio.com",
+          projectId: "itcode-save",
+          storageBucket: "itcode-save.firebasestorage.app",
+          messagingSenderId: "203519690548",
+          appId: "1:203519690548:web:8213138a0be9fd57ef0761"
+        };
+        const imgbbApiKey = "58cd3146e3b42590eca9ad6be0f84198";
+        const imgbbUploadUrl = "https://api.imgbb.com/1/upload";
+        const EDIT_PASSCODE = "RK2048"; // Passcode for Edit, Delete, Save
+
+        // --- Firebase Initialization ---
+        let database = null; let entriesRef = null;
+        try { if (!firebaseConfig.apiKey || !firebaseConfig.projectId || !firebaseConfig.databaseURL) { throw new Error("Firebase config incomplete."); } if (typeof window.jspdf === 'undefined') { console.warn("jsPDF library not loaded."); } firebase.initializeApp(firebaseConfig); database = firebase.database(); entriesRef = database.ref('entries'); console.log("Firebase Initialized Successfully."); } catch (error) { /* ... Error Handling ... */ console.error("Firebase Initialization Failed:", error); const statusMsgElem = document.getElementById('statusMessage'); const loadingPlaceholder = document.querySelector('#savedEntriesContainer .no-entries-placeholder'); const errorText = `Error connecting to Database: ${error.message}. Check config & console.`; if(statusMsgElem) { statusMsgElem.textContent = errorText; statusMsgElem.className = 'error visible'; } if(loadingPlaceholder) loadingPlaceholder.textContent = errorText; else if (savedEntriesContainer) { savedEntriesContainer.innerHTML = `<p class="no-entries-placeholder" style="color: var(--color-error);">${errorText}</p>`; } else { alert(errorText); } }
+
+        // --- DOM Elements ---
+        const textInput = document.getElementById('textInput'); const imageInput = document.getElementById('imageInput'); const imagePreview = document.getElementById('imagePreview'); const saveButton = document.getElementById('saveButton'); const statusMessage = document.getElementById('statusMessage'); const savedEntriesContainer = document.getElementById('savedEntriesContainer'); const modalOverlay = document.getElementById('modalOverlay'); const modalCloseButton = document.getElementById('modalCloseButton'); const modalSaveButton = document.getElementById('modalSaveButton'); const modalCancelButton = document.getElementById('modalCancelButton'); const modalEntryIdInput = document.getElementById('modalEntryId'); const modalEditTextarea = document.getElementById('modalEditTextarea'); const modalPasscodeInput = document.getElementById('modalPasscode'); const modalErrorMessage = document.getElementById('modalErrorMessage');
+        // Theme button reference removed
+        const bodyElement = document.body;
+
+        // --- Theme Functions Removed ---
+
+        // --- Other Functions ---
+        let statusTimeout = null; function showStatus(message, type = 'info', clearAfterMs = 3500) { if (!statusMessage) return; clearTimeout(statusTimeout); statusMessage.textContent = message; statusMessage.className = `${type} visible`; console.log(`Status (${type}): ${message}`); if (clearAfterMs !== null) { statusTimeout = setTimeout(() => { statusMessage.classList.remove('visible'); }, clearAfterMs); } }
+        function clearInputs() { if (textInput) textInput.value = ''; if (imageInput) imageInput.value = null; if (imagePreview) { imagePreview.style.display = 'none'; imagePreview.src = '#'; } }
+        async function uploadImageToImgBB(file) { /* ... */ if (!imgbbApiKey || imgbbApiKey.length < 30) { showStatus('ImgBB API Key is missing or invalid.', 'error', 5000); return null;} const formData = new FormData(); formData.append('key', imgbbApiKey); formData.append('image', file); showStatus('Uploading image...', 'info', null); try { const response = await fetch(imgbbUploadUrl, { method: 'POST', body: formData }); if (!response.ok) { const errorData = await response.json().catch(() => ({})); throw new Error(`ImgBB upload failed: ${response.statusText} - ${errorData?.error?.message || 'Check ImgBB key/service'}`); } const result = await response.json(); if (result.success && result.data?.url) { showStatus('Image uploaded successfully!', 'success'); return result.data.url; } else { throw new Error('ImgBB upload succeeded but no URL was returned.'); } } catch (error) { console.error("ImgBB Upload Error:", error); showStatus(`Image upload failed: ${error.message}`, 'error', 5000); return null; } }
+        async function saveEntryToFirebase(text, imageUrl) { /* ... */ if (!entriesRef) { showStatus('Firebase database reference is not available.', 'error', 5000); console.error("Firebase entriesRef is null. Cannot save."); return; } const newEntry = { text: text, imageUrl: imageUrl, timestamp: firebase.database.ServerValue.TIMESTAMP }; showStatus('Saving data to Firebase...', 'info', null); try { await entriesRef.push(newEntry); showStatus('Entry saved successfully!', 'success'); clearInputs(); } catch (error) { console.error("FIREBASE SAVE FAILED:", error); if (error.code === 'PERMISSION_DENIED') { showStatus('Save failed: Permission denied. Check Firebase Rules.', 'error', 6000); } else { showStatus(`Failed to save entry: ${error.message}`, 'error', 5000); } } }
+
+         // ** Updated handleSaveClick with Passcode **
+         async function handleSaveClick() {
+            const savePasscode = prompt("Enter Passcode to Save:");
+            if (savePasscode === null) { showStatus("Save cancelled.", "info", 2000); return; }
+            if (savePasscode !== EDIT_PASSCODE) { showStatus("Incorrect Passcode. Save failed.", "error", 3000); return; }
+            if (saveButton) saveButton.disabled = true; const text = textInput?.value.trim() ?? ""; const imageFile = imageInput?.files[0]; if (!text && !imageFile) { showStatus('Please enter text or choose an image.', 'error'); if (saveButton) saveButton.disabled = false; return; } showStatus('Processing...', 'info', null); let imageUrl = null; if (imageFile) { imageUrl = await uploadImageToImgBB(imageFile); if (!imageUrl) { if (saveButton) saveButton.disabled = false; return; } } if (text || imageUrl) { await saveEntryToFirebase(text, imageUrl); } else { showStatus('Nothing to save.', 'info'); } if (saveButton) saveButton.disabled = false;
+        }
+
+        function openModal(entryId, currentText) { if (!modalOverlay) return; modalEntryIdInput.value = entryId; modalEditTextarea.value = currentText; modalPasscodeInput.value = ''; modalErrorMessage.style.display = 'none'; modalOverlay.classList.add('modal-visible'); modalEditTextarea.focus(); }
+        function closeModal() { if (!modalOverlay) return; modalOverlay.classList.remove('modal-visible'); }
+
+        let entryRenderCount = 0; // For staggering animation
+        function renderEntry(entryData, entryId, isExistingDiv = null) {
+             // console.log(`renderEntry called for ID: ${entryId}`);
+             if (!entryData) { console.warn(`renderEntry skipped for ${entryId}: Invalid entryData.`); return null; }
+             let entryDiv = isExistingDiv; let isNew = !isExistingDiv;
+             if (isNew) { entryDiv = document.createElement('div'); entryDiv.classList.add('entry'); entryDiv.setAttribute('data-id', entryId); entryDiv.style.setProperty('--animation-delay', `${Math.min(entryRenderCount++ * 0.08, 1.5)}s`); }
+             else { entryDiv.innerHTML = ''; } // Clear and rebuild on update
+
+             const entryText = entryData.text || "";
+             const entryImageUrl = entryData.imageUrl || null;
+
+             // Text Wrapper (Paragraph + Toggle Button)
+             const textWrapper = document.createElement('div'); textWrapper.classList.add('entry-text-wrapper');
+             const textP = document.createElement('p'); textP.classList.add('entry-text', 'text-minimized'); textP.textContent = entryText; textWrapper.appendChild(textP);
+             if (entryText) {
+                 const toggleTextButton = document.createElement('button');
+                 toggleTextButton.textContent = '🔽'; toggleTextButton.title = 'Show More';
+                 toggleTextButton.classList.add('toggle-text-button', 'button-base');
+                 toggleTextButton.style.cssText = 'padding: 3px 8px; font-size: 1rem; margin-top: 8px; background-color: var(--color-surface); color: var(--color-text-secondary); border: 1px solid var(--color-border); width: auto; height: auto; box-shadow: none;';
+                 toggleTextButton.addEventListener('click', () => {
+                     const isMinimized = textP.classList.contains('text-minimized');
+                     if (isMinimized) { textP.classList.remove('text-minimized'); toggleTextButton.textContent = '🔼'; toggleTextButton.title = 'Show Less'; }
+                     else { textP.classList.add('text-minimized'); toggleTextButton.textContent = '🔽'; toggleTextButton.title = 'Show More'; }
+                 });
+                 textWrapper.appendChild(toggleTextButton);
+             }
+             entryDiv.appendChild(textWrapper);
+
+             // Image Container
+             if (entryImageUrl) { const imageContainer = document.createElement('div'); imageContainer.classList.add('entry-image-container'); const imgElement = document.createElement('img'); imgElement.classList.add('entry-image'); imgElement.src = entryImageUrl; imgElement.alt = "Saved Note Image"; imgElement.loading = "lazy"; imgElement.onerror = () => { imageContainer.innerHTML = '<span class="img-error-text">[Image unavailable]</span>'; }; imageContainer.appendChild(imgElement); entryDiv.appendChild(imageContainer); }
+
+             // Comments Section Removed
+
+             // Metadata (Buttons & Timestamp)
+             const metadataDiv = document.createElement('div'); metadataDiv.classList.add('metadata'); const buttonGroupDiv = document.createElement('div'); buttonGroupDiv.classList.add('button-group');
+             if (entryText) { const editButton = document.createElement('button'); editButton.textContent = 'Edit'; editButton.classList.add('edit-button', 'button-base'); editButton.addEventListener('click', () => { const currentTextInDOM = entryDiv.querySelector('.entry-text')?.textContent ?? entryText; openModal(entryId, currentTextInDOM); }); buttonGroupDiv.appendChild(editButton); }
+             if (entryText) { const copyButton = document.createElement('button'); copyButton.textContent = 'Copy Text'; copyButton.classList.add('copy-button', 'button-base'); copyButton.addEventListener('click', () => { /* ... copy logic ... */ const textToCopy = entryDiv.querySelector('.entry-text')?.textContent ?? entryText; navigator.clipboard.writeText(textToCopy).then(() => { copyButton.textContent = 'Copied!'; copyButton.classList.add('copied'); setTimeout(() => { copyButton.textContent = 'Copy Text'; copyButton.classList.remove('copied'); }, 1500); }).catch(err => { console.error('Failed to copy text: ', err); copyButton.textContent = 'Error'; setTimeout(() => { copyButton.textContent = 'Copy Text'; }, 2000); }); }); buttonGroupDiv.appendChild(copyButton); }
+             const pdfButton = document.createElement('button'); pdfButton.textContent = 'Save PDF'; pdfButton.classList.add('pdf-button', 'button-base'); pdfButton.addEventListener('click', () => { /* ... pdf logic ... */ pdfButton.textContent = 'Creating...'; pdfButton.disabled = true; try { if (typeof window.jspdf === 'undefined' || typeof window.jspdf.jsPDF === 'undefined') { throw new Error('jsPDF library is not loaded.'); } const { jsPDF } = window.jspdf; const doc = new jsPDF(); const textToPrint = entryDiv.querySelector('.entry-text')?.textContent ?? entryText; /* PDF uses dark text on white bg */ doc.setFontSize(18); doc.setTextColor(0); doc.text("RK NoteBOX Entry", 14, 22); doc.setFontSize(11); doc.setTextColor(100); const saveDate = entryData.timestamp ? new Date(entryData.timestamp).toLocaleString() : 'N/A'; doc.text(`Saved: ${saveDate}`, 14, 30); doc.setDrawColor(200); doc.setLineWidth(0.1).line(14, 32, doc.internal.pageSize.getWidth() - 14, 32); doc.setFontSize(12); doc.setTextColor(0); const pageH = doc.internal.pageSize.getHeight(); const margin = 15; const usableHeight = pageH - (2 * margin); let currentY = 45; const lines = doc.splitTextToSize(textToPrint, doc.internal.pageSize.getWidth() - (2 * margin)); const lineHeight = doc.getLineHeight(); for(let i=0; i<lines.length; i++){ if (currentY + lineHeight > pageH - margin && i < lines.length -1 ) { doc.addPage(); currentY = margin; doc.setFontSize(12); doc.setTextColor(0); } doc.text(lines[i], margin, currentY); currentY += lineHeight; } let finalY = currentY; if (entryData.imageUrl) { doc.setTextColor(100); doc.textWithLink('Image URL (Click)', margin, finalY + 10, { url: entryData.imageUrl }); doc.setTextColor(50); doc.setFontSize(9); doc.setTextColor(150); doc.text("[Note: Direct image embedding is often blocked by browser security (CORS). URL provided.]", margin, finalY + 18); } doc.save(`RK_NoteBOX_${entryId.substring(0, 6)}.pdf`); } catch(err) { console.error("PDF Generation Error:", err); showStatus("Error creating PDF.", "error", 3000); } finally { pdfButton.textContent = 'Save PDF'; pdfButton.disabled = false; } }); buttonGroupDiv.appendChild(pdfButton);
+             const deleteButton = document.createElement('button'); deleteButton.textContent = 'Delete'; deleteButton.classList.add('delete-button', 'button-base'); deleteButton.addEventListener('click', () => { /* ... delete logic ... */ const deletePasscode = prompt(`Enter passcode to delete this note:`); if (deletePasscode === null) { showStatus("Delete cancelled.", "info", 2000); return; } if (deletePasscode !== EDIT_PASSCODE) { showStatus("Incorrect Passcode. Delete failed.", "error", 3000); return; } const deleteReason = prompt("(Optional) Enter reason for deletion:"); if (confirm("Are you SURE you want to permanently delete this note?")) { if (entriesRef) { entriesRef.child(entryId).remove().then(() => { showStatus("Note deleted successfully.", "success", 2000); console.log(`Entry ${entryId} deleted. Reason: ${deleteReason || 'N/A'}`); }).catch((error) => { console.error("Firebase delete error:", error); showStatus(`Error deleting note: ${error.message}`, "error", 4000); }); } else { showStatus("Cannot delete: Database connection error.", "error", 4000); } } else { showStatus("Delete cancelled.", "info", 2000); } }); buttonGroupDiv.appendChild(deleteButton);
+             metadataDiv.appendChild(buttonGroupDiv); const timeSpan = document.createElement('span'); timeSpan.classList.add('entry-timestamp'); if(entryData.timestamp) { try { timeSpan.textContent = `Saved: ${new Date(entryData.timestamp).toLocaleString()}`; } catch (e) { timeSpan.textContent = 'Saved: Invalid date'; } } else { timeSpan.textContent = ''; } metadataDiv.appendChild(timeSpan); entryDiv.appendChild(metadataDiv);
+             if (isNew) { savedEntriesContainer.prepend(entryDiv); setTimeout(() => { entryDiv.classList.add('visible'); }, 50); } return entryDiv;
+        }
+
+        function loadAndDisplayEntries() { /* ... (load/display logic with listeners remains same) ... */
+             console.log("loadAndDisplayEntries function started."); if (!entriesRef || !savedEntriesContainer) { console.error("Cannot load entries - Firebase Ref or Container missing."); if (savedEntriesContainer) savedEntriesContainer.innerHTML = '<p style="color: var(--error-color);">Error: Cannot load entries.</p>'; return; } const placeholder = savedEntriesContainer.querySelector('.no-entries-placeholder'); if (placeholder && placeholder.textContent === 'Loading entries...') { placeholder.textContent = ''; } else if (!placeholder && !savedEntriesContainer.querySelector('.entry')) { savedEntriesContainer.innerHTML = '<p class="no-entries-placeholder"></p>'; } entryRenderCount = 0; console.log("Attaching Firebase listeners...");
+            entriesRef.orderByChild('timestamp').on('child_added', (snapshot) => { if (snapshot.exists()) { const placeholder = savedEntriesContainer.querySelector('.no-entries-placeholder'); if(placeholder) placeholder.remove(); renderEntry(snapshot.val(), snapshot.key); } }, (error) => { console.error("Error in child_added listener:", error); showStatus(`Error loading entries: ${error.message}`, 'error', null); savedEntriesContainer.innerHTML = `<p style="color: var(--error-color);">Error loading entries: ${error.code}</p>`; });
+            entriesRef.on('child_changed', (snapshot) => { if (snapshot.exists()) { const entryId = snapshot.key; const updatedData = snapshot.val(); const entryDiv = savedEntriesContainer.querySelector(`.entry[data-id="${entryId}"]`); if (entryDiv) { console.log(`Updating entry UI for ID: ${entryId}`); renderEntry(updatedData, entryId, entryDiv); entryDiv.style.transition = 'background-color 0.1s ease'; entryDiv.style.backgroundColor = 'var(--color-accent)'; setTimeout(() => { entryDiv.style.backgroundColor = 'var(--color-surface)'; setTimeout(() => { entryDiv.style.transition = 'opacity 0.5s ease, transform 0.5s ease, background-color 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease';}, 150); }, 150); } else { console.warn(`Changed entry div not found in DOM for ID: ${entryId}`); } } });
+            entriesRef.on('child_removed', (snapshot) => { if (snapshot.exists()) { const entryId = snapshot.key; const entryDiv = savedEntriesContainer.querySelector(`.entry[data-id="${entryId}"]`); if (entryDiv) { console.log(`Removing entry UI for ID: ${entryId}`); entryDiv.style.transition = 'opacity 0.4s ease, transform 0.4s ease'; entryDiv.style.opacity = '0'; entryDiv.style.transform = 'scale(0.9)'; setTimeout(() => { entryDiv.remove(); if (!savedEntriesContainer.querySelector('.entry')) { savedEntriesContainer.innerHTML = '<p class="no-entries-placeholder">No entries saved yet.</p>'; } }, 400); } } });
+            entriesRef.once('value', snapshot => { console.log("Checking initial DB state..."); if (!snapshot.exists()) { console.log("Database is empty or /entries node doesn't exist."); const placeholder = savedEntriesContainer.querySelector('.no-entries-placeholder'); if (placeholder) { placeholder.textContent = 'No entries saved yet.'; } else if (!savedEntriesContainer.querySelector('.entry')) { savedEntriesContainer.innerHTML = '<p class="no-entries-placeholder">No entries saved yet.</p>'; } } else { console.log("Initial data check found entries."); const placeholder = savedEntriesContainer.querySelector('.no-entries-placeholder'); if (placeholder && savedEntriesContainer.querySelector('.entry')) { placeholder.remove(); } } }, (error) => { console.error("Firebase initial 'once' read error:", error); const placeholder = savedEntriesContainer.querySelector('.no-entries-placeholder'); const errorMsg = `Error checking initial data: ${error.code || error.message}`; if(placeholder) placeholder.textContent = errorMsg; else if (savedEntriesContainer) savedEntriesContainer.innerHTML = `<p class="no-entries-placeholder" style="color: var(--error-color);">${errorMsg}</p>`; });
+            console.log("Firebase listeners attached.");
+        }
+
+        // --- Event Listeners ---
+        if (saveButton) { saveButton.addEventListener('click', handleSaveClick); } else { console.error("Save button not found!"); }
+        if (imageInput) { imageInput.addEventListener('change', (event) => { const file = event.target.files[0]; if (file && imagePreview) { const reader = new FileReader(); reader.onload = function(e) { imagePreview.src = e.target.result; imagePreview.style.display = 'block'; }; reader.readAsDataURL(file); } else if (imagePreview) { imagePreview.style.display = 'none'; imagePreview.src = '#'; } }); } else { console.error("Image input not found!"); }
+        // Modal Listeners
+        if (modalSaveButton) { modalSaveButton.addEventListener('click', () => { /* ... modal save logic ... */ const entryId = modalEntryIdInput.value; const newText = modalEditTextarea.value; const enteredPasscode = modalPasscodeInput.value; modalErrorMessage.style.display = 'none'; if (enteredPasscode !== EDIT_PASSCODE) { modalErrorMessage.textContent = 'Incorrect Passcode!'; modalErrorMessage.style.display = 'block'; modalPasscodeInput.value = ''; modalPasscodeInput.focus(); return; } if (entryId && newText !== null && entriesRef) { console.log(`Attempting to update entry ${entryId} with passcode.`); entriesRef.child(entryId).update({ text: newText }).then(() => { showStatus('Note updated successfully!', 'success', 2000); closeModal(); }).catch(err => { console.error("Firebase update error:", err); modalErrorMessage.textContent = `Error updating: ${err.message}`; modalErrorMessage.style.display = 'block'; }); } else { modalErrorMessage.textContent = 'Could not save. Entry ID or text missing.'; modalErrorMessage.style.display = 'block'; } }); }
+        if (modalCancelButton) { modalCancelButton.addEventListener('click', closeModal); }
+        if (modalCloseButton) { modalCloseButton.addEventListener('click', closeModal); }
+        if (modalOverlay) { modalOverlay.addEventListener('click', (event) => { if (event.target === modalOverlay) { closeModal(); } }); }
+        // Theme Toggle Listener Removed
+
+        // --- Initial Load ---
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log("DOM Loaded. Checking Firebase readiness..."); // No theme init
+            if (typeof firebase !== 'undefined' && firebase.app() && entriesRef) { console.log("Firebase ready. Calling loadAndDisplayEntries..."); loadAndDisplayEntries(); }
+            else { /* ... Firebase not ready error handling ... */ console.error("Firebase not ready for initial load. Listeners not attached."); const placeholder = savedEntriesContainer?.querySelector('.no-entries-placeholder'); const errorMsg = 'Error: Firebase connection issue. Cannot load entries.'; if (placeholder) placeholder.textContent = errorMsg; else if (savedEntriesContainer) savedEntriesContainer.innerHTML = `<p class="no-entries-placeholder" style="color: var(--error-color);">${errorMsg}</p>`; if(!document.getElementById('statusMessage')?.classList.contains('visible')) { showStatus('Firebase Initialization Failed!', 'error', null); } }
+        });
+    </script>
+
+</body>
+</html>
